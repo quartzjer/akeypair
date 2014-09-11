@@ -29,8 +29,9 @@ $ node example.js
 
 ## Performance
 
-Performance greatly depends on the bit size of the generated private key. With 1024 bits you get a key in 0.5s-2s, with 2048 bits it takes 8s-20s, on the same machine. As this will block the event loop while generating the key,
-make sure that's ok or to spawn a child process or run it inside a webworker.
+When using node and the ursa dependency works, it's really fast :)
+
+In the browser performance greatly depends on the bit size of the generated private key. With 1024 bits you get a key in 0.5s-2s, with 2048 bits it takes 8s-20s, on the same machine. 
 
 ## API
 
