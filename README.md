@@ -1,19 +1,22 @@
-# keypair
+# akeypair
 
-Generate a RSA PEM key pair from pure JS
+Async generate a RSA PEM key pair from pure JS or compiled
 
-[![Build Status](https://travis-ci.org/juliangruber/keypair.svg?branch=master)](https://travis-ci.org/juliangruber/keypair)
-[![downloads](https://img.shields.io/npm/dm/keypair.svg)](https://www.npmjs.org/package/keypair)
+> This is a fork of the [keypair](https://github.com/juliangruber/keypair) module, making it async so that it doesn't block (using web-workers when available) and also will try to use a compiled OpenSSL binding in node (still falling back to pure-JS if not).
 
-[![browser support](https://ci.testling.com/juliangruber/keypair.png)](https://ci.testling.com/juliangruber/keypair)
+[![Build Status](https://travis-ci.org/quartzjer/akeypair.svg?branch=master)](https://travis-ci.org/quartzjer/akeypair)
+[![downloads](https://img.shields.io/npm/dm/akeypair.svg)](https://www.npmjs.org/package/akeypair)
+
+[![browser support](https://ci.testling.com/quartzjer/akeypair.png)](https://ci.testling.com/quartzjer/akeypair)
 
 ## Usage
 
 ```js
-var keypair = require('keypair');
+var akeypair = require('akeypair');
 
-var pair = keypair();
-console.log(pair);
+akeypair(function(err, pair){
+  console.log(pair);
+});
 ```
 
 outputs
@@ -31,7 +34,7 @@ make sure that's ok or to spawn a child process or run it inside a webworker.
 
 ## API
 
-### keypair([opts])
+### akeypair([opts, ]callback)
 
 Get an RSA PEM key pair.
 
@@ -45,7 +48,7 @@ Get an RSA PEM key pair.
 With [npm](http://npmjs.org) do
 
 ```bash
-$ npm install keypair
+$ npm install akeypair
 ```
 
 ## Kudos

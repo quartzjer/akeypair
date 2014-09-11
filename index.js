@@ -1,3 +1,8 @@
+// optionally try to use compiled ursa generation
+try {
+  var ursa = require('ursa');
+}catch(E){}
+
 var forge = {};
 var aes = forge.aes = {};
 var md = forge.md = {};
@@ -6,18 +11,34 @@ var rsa = forge.pki.rsa = forge.rsa = {};
 var util = forge.util = {};
 
 /**
- * Expose `keypair`.
+ * Expose `akeypair`.
  */
 
-module.exports = function (opts) {
-  if (!opts) opts = {};
+module.exports = function (opts, cb) {
+  if (typeof opts == 'function') cb = opts;
+  if (typeof opts != 'object') opts = {};
   if (typeof opts.bits == 'undefined') opts.bits = 2048;
-  var keypair = forge.rsa.generateKeyPair(opts);
-  keypair = {
-    public: fix(forge.pki.publicKeyToRSAPublicKeyPem(keypair.publicKey, 72)),
-    private: fix(forge.pki.privateKeyToPem(keypair.privateKey, 72))
-  };
-  return keypair;
+  if (typeof opts.e == 'undefined') opts.e = 65537;
+  if (!opts.purejs)
+  {
+    try {
+      var pair = ursa.generatePrivateKey(opts.bits, opts.e);
+      var keypair = {
+        public: fix(pair.toPublicPem("utf8").replace('BEGIN PUBLIC KEY','BEGIN RSA PUBLIC KEY')),
+        private: fix(pair.toPrivatePem("utf8"))
+      };
+    }catch(E){}
+    // bad form to cb from inside a try
+    if(keypair) return cb(undefined, keypair);
+  }
+  forge.rsa.generateKeyPair(opts, function(err, pair){
+    if (err) return cb(err);
+    var keypair = {
+      public: fix(forge.pki.publicKeyToRSAPublicKeyPem(pair.publicKey, 72)),
+      private: fix(forge.pki.privateKeyToPem(pair.privateKey, 72))
+    };
+    cb(undefined, keypair);
+  });
 };
 
 function fix (str) {
@@ -4093,7 +4114,7 @@ function _generateKeyPair(state, options, callback) {
   }
 
   // web workers unavailable, use setImmediate
-  if(false || typeof(Worker) === 'undefined') {
+  if(typeof(Worker) === 'undefined') {
     function step() {
       // 10 ms gives 5ms of leeway for other calculations before dropping
       // below 60fps (1000/60 == 16.67), but in reality, the number will

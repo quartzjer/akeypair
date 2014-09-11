@@ -1,17 +1,20 @@
 {
-  "name": "keypair",
-  "description": "Generate a RSA PEM key pair from pure JS",
-  "version": "1.0.0",
+  "name": "akeypair",
+  "description": "Async generate a RSA PEM key pair from pure JS or compiled",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/juliangruber/keypair.git"
+    "url": "git://github.com/quartzjer/akeypair.git"
   },
-  "homepage": "https://github.com/juliangruber/keypair",
+  "homepage": "https://github.com/quartzjer/akeypair",
   "main": "index.js",
   "scripts": {
     "test": "tape test.js"
   },
   "dependencies": {},
+  "optionalDependencies": {
+    "ursa": "~0.8.0"
+  },
   "devDependencies": {
     "tape": "~1.0.2"
   },
@@ -25,11 +28,15 @@
     "key",
     "ssh"
   ],
-  "author": {
+  "author": [{
     "name": "Julian Gruber",
     "email": "mail@juliangruber.com",
     "url": "http://juliangruber.com"
-  },
+    },{
+    "name": "Jeremie Miller",
+    "email": "jeremie@jabber.org",
+    "url": "http://jeremie.com/"
+    }],
   "testling": {
     "files": "test.js",
     "browsers": [

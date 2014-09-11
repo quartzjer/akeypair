@@ -1,4 +1,5 @@
-var keypair = require('./');
+var akeypair = require('./');
 
-var pair = keypair();
-console.log(pair);
+akeypair(function(err, pair){
+  console.log(pair);
+});
