@@ -7,6 +7,7 @@ test('keypair', function (t) {
     t.assert(/BEGIN RSA PRIVATE KEY/.test(pair.private), 'private header');
     t.ok(pair.public, 'public key');
     t.assert(/BEGIN RSA PUBLIC KEY/.test(pair.public), 'public header');
+    t.assert(/END RSA PUBLIC KEY/.test(pair.public), 'public footer');
     t.end();
   });
 });
@@ -17,6 +18,7 @@ test('keypair-js', function (t) {
     t.assert(/BEGIN RSA PRIVATE KEY/.test(pair.private), 'private header');
     t.ok(pair.public, 'public key');
     t.assert(/BEGIN RSA PUBLIC KEY/.test(pair.public), 'public header');
+    t.assert(/END RSA PUBLIC KEY/.test(pair.public), 'public footer');
     t.end();
   });
 });

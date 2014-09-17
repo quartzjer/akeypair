@@ -24,7 +24,7 @@ module.exports = function (opts, cb) {
     try {
       var pair = ursa.generatePrivateKey(opts.bits, opts.e);
       var keypair = {
-        public: fix(pair.toPublicPem("utf8").replace('BEGIN PUBLIC KEY','BEGIN RSA PUBLIC KEY')),
+        public: fix(pair.toPublicPem("utf8").replace('BEGIN PUBLIC KEY','BEGIN RSA PUBLIC KEY').replace('END PUBLIC KEY','END RSA PUBLIC KEY')),
         private: fix(pair.toPrivatePem("utf8"))
       };
     }catch(E){}
