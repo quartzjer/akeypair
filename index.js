@@ -24,7 +24,7 @@ module.exports = function (opts, cb) {
     try {
       var pair = ursa.generatePrivateKey(opts.bits, opts.e);
       var keypair = {
-        public: fix(pair.toPublicPem("utf8").replace('BEGIN PUBLIC KEY','BEGIN RSA PUBLIC KEY').replace('END PUBLIC KEY','END RSA PUBLIC KEY')),
+        public: fix(pair.toPublicPem("utf8")),
         private: fix(pair.toPrivatePem("utf8"))
       };
     }catch(E){}
@@ -34,7 +34,7 @@ module.exports = function (opts, cb) {
   forge.rsa.generateKeyPair(opts, function(err, pair){
     if (err) return cb(err);
     var keypair = {
-      public: fix(forge.pki.publicKeyToRSAPublicKeyPem(pair.publicKey, 72)),
+      public: fix(forge.pki.publicKeyToPem(pair.publicKey, 72)),
       private: fix(forge.pki.privateKeyToPem(pair.privateKey, 72))
     };
     cb(undefined, keypair);
@@ -4353,6 +4353,138 @@ var _bnToBytes = function(b) {
     hex = '00' + hex;
   }
   return forge.util.hexToBytes(hex);
+};
+
+/**
+ * Converts an OID dot-separated string to a byte buffer. The byte buffer
+ * contains only the DER-encoded value, not any tag or length bytes.
+ *
+ * @param oid the OID dot-separated string.
+ *
+ * @return the byte buffer.
+ */
+asn1.oidToDer = function(oid) {
+  // split OID into individual values
+  var values = oid.split('.');
+  var bytes = forge.util.createBuffer();
+
+  // first byte is 40 * value1 + value2
+  bytes.putByte(40 * parseInt(values[0], 10) + parseInt(values[1], 10));
+  // other bytes are each value in base 128 with 8th bit set except for
+  // the last byte for each value
+  var last, valueBytes, value, b;
+  for(var i = 2; i < values.length; ++i) {
+    // produce value bytes in reverse because we don't know how many
+    // bytes it will take to store the value
+    last = true;
+    valueBytes = [];
+    value = parseInt(values[i], 10);
+    do {
+      b = value & 0x7F;
+      value = value >>> 7;
+      // if value is not last, then turn on 8th bit
+      if(!last) {
+        b |= 0x80;
+      }
+      valueBytes.push(b);
+      last = false;
+    } while(value > 0);
+
+    // add value bytes in reverse (needs to be in big endian)
+    for(var n = valueBytes.length - 1; n >= 0; --n) {
+      bytes.putByte(valueBytes[n]);
+    }
+  }
+
+  return bytes;
+};
+
+/**
+ * Converts a public key to an ASN.1 SubjectPublicKeyInfo.
+ *
+ * @param key the public key.
+ *
+ * @return the asn1 representation of a SubjectPublicKeyInfo.
+ */
+pki.publicKeyToAsn1 = pki.publicKeyToSubjectPublicKeyInfo = function(key) {
+  // SubjectPublicKeyInfo
+  return asn1.create(asn1.Class.UNIVERSAL, asn1.Type.SEQUENCE, true, [
+    // AlgorithmIdentifier
+    asn1.create(asn1.Class.UNIVERSAL, asn1.Type.SEQUENCE, true, [
+      // algorithm
+      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.OID, false,
+        asn1.oidToDer('1.2.840.113549.1.1.1').getBytes()),
+      // parameters (null)
+      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.NULL, false, '')
+    ]),
+    // subjectPublicKey
+    asn1.create(asn1.Class.UNIVERSAL, asn1.Type.BITSTRING, false, [
+      pki.publicKeyToRSAPublicKey(key)
+    ])
+  ]);
+};
+
+/**
+ * Encodes (serializes) the given PEM object.
+ *
+ * @param msg the PEM message object to encode.
+ * @param options the options to use:
+ *          maxline the maximum characters per line for the body, (default: 64).
+ *
+ * @return the PEM-formatted string.
+ */
+forge.pem = {};
+forge.pem.encode = function(msg, options) {
+  options = options || {};
+  var rval = '-----BEGIN ' + msg.type + '-----\r\n';
+
+  // encode special headers
+  var header;
+  if(msg.procType) {
+    header = {
+      name: 'Proc-Type',
+      values: [String(msg.procType.version), msg.procType.type]
+    };
+    rval += foldHeader(header);
+  }
+  if(msg.contentDomain) {
+    header = {name: 'Content-Domain', values: [msg.contentDomain]};
+    rval += foldHeader(header);
+  }
+  if(msg.dekInfo) {
+    header = {name: 'DEK-Info', values: [msg.dekInfo.algorithm]};
+    if(msg.dekInfo.parameters) {
+      header.values.push(msg.dekInfo.parameters);
+    }
+    rval += foldHeader(header);
+  }
+
+  if(msg.headers) {
+    // encode all other headers
+    for(var i = 0; i < msg.headers.length; ++i) {
+      rval += foldHeader(msg.headers[i]);
+    }
+  }
+
+  // terminate header
+  if(msg.procType) {
+    rval += '\r\n';
+  }
+
+  // add body
+  rval += forge.util.encode64(msg.body, options.maxline || 64) + '\r\n';
+
+  rval += '-----END ' + msg.type + '-----\r\n';
+  return rval;
+};
+
+pki.publicKeyToPem = function(key, maxline) {
+  // convert to ASN.1, then DER, then PEM-encode
+  var msg = {
+    type: 'PUBLIC KEY',
+    body: asn1.toDer(pki.publicKeyToAsn1(key)).getBytes()
+  };
+  return forge.pem.encode(msg, {maxline: maxline});
 };
 
 /**
