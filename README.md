@@ -35,15 +35,23 @@ By default it generates a 2048 bit key, this can be changed by passing options a
 
 To use this module for generating a keypair for a TLS/HTTPS server with a self-signed certificate, pass options of `{cert:true}` and it will return an object that can be used as the first argument to [https.createServer()](http://nodejs.org/api/https.html#https_https_createserver_options_requestlistener):
 
-````json
-{
-  "public": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlfMDv+21MpZZVFEsiJ8xT7IgT6Og\nJCRnIL8dpjLZeIhmYNyaanXfMIAUya1P7Va9foejVSCP7RwFAQamYvtS/j4GDi1AJhV0uBju\nCeOWa4uTRF6xLxG+5h35FzG6XVOVibrIO/84xz1/LV8W9cuvTg3qgXqdGb/tRHlxRJPiazV+\nhvw+l4Q73seSEmPxTRtOt6BsktdhoEPVLN7ax9cKIQ2YPEr0deqGZso8b6QjrB4HNf8c1WUb\n75sSKmz07Ho1FW9hFbc/vLURaetOZE6y0+xlQBJR4Ey8LST08nScC1nEQuSpFBpPsqIF/TLD\n4Czin5WJ5iSqbeYf4i/lW/eV3QIDAQAB\n-----END PUBLIC KEY-----\n\n",
-  "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAlfMDv+21MpZZVFEsiJ8xT7IgT6OgJCRnIL8dpjLZeIhmYNyaanXfMIAU\nya1P7Va9foejVSCP7RwFAQamYvtS/j4GDi1AJhV0uBjuCeOWa4uTRF6xLxG+5h35FzG6XVOV\nibrIO/84xz1/LV8W9cuvTg3qgXqdGb/tRHlxRJPiazV+hvw+l4Q73seSEmPxTRtOt6Bsktdh\noEPVLN7ax9cKIQ2YPEr0deqGZso8b6QjrB4HNf8c1WUb75sSKmz07Ho1FW9hFbc/vLURaetO\nZE6y0+xlQBJR4Ey8LST08nScC1nEQuSpFBpPsqIF/TLD4Czin5WJ5iSqbeYf4i/lW/eV3QID\nAQABAoIBAFhylLakPypMtvpeOzeHNy38MsTnDjHjaxVMxe9ftRk806600TyUtIbGNfzUBv5H\nGNVGqpgu8dZ5nZYCVyixeD3RVf8Mv/b21vc0dUxN+08KcF52wGq0O/c+nMwKoBQmlmE8VJnX\nLKWRZ6/alA9+CrSuzrF7IqmqpQir3Z0G4ho79MH69hltXdUMmm4M4UoJ4YPy2MQyi8a16ke7\nZWSZ3AwhaHbDRfhKgTs3YfvbrSbRH0toSqQsyS8roHSVmJQoNUpEaf/2NBwpaiPcaBoKJ3NH\n8W9vqk5h2YSwNZtCafF7wmBKalLQ+EvPJdOatm+5aBoSfSUDdFtd5XpU6pLN/KECgYEA5FGs\nsh4SX3jaD1hRM6XdqanMQ7hFimUeWp2hqvsHwDlMOpned2g/Luy75L77b9WidQqj5sk5hHW5\nmAF2XLKapkehMg4CIqKq5fKV4pzc29VP6bSw4sbV/vd1qzJ2QlJDX8fH+6Dz1fcjzQzHfmgF\nCKx07o539czZKlspvHD+8kkCgYEAqCD7ZDU89283TpCfNISvLK/5dxOefwhvPQ2zktSiurDG\nCzffOqCmLD3IMNJqU5lALKbka07XWmRR1ZmW0jnoZUxtNgA+JIyn4rRhpxleNu363btAvAtP\nk0DrA1g/bUru8AAJgHTAPuGOK+Nc4XgTxgh8tX2kqC/YuRqIwMvsBvUCgYEAy+sah9cN59FD\nSPNDSxK4QEFUG6OoEGwxyRMCgnhEOu2x5KDqrdEgpWNwiWP9o6u1tj0zl/te8KxIf7fGpBIs\nx5gwI0mZpJ+ObWPVdJlPNNR21C+60EBwfpE7uhSOxLs+S3xeY6IkRZS+l/Py9TYoUM/ee/Yo\ntBMqXocfZpuxSGkCgYAHk1zgegmiOI+saZXS3vuprtA1zluA69dfT+O8hPpEITz7OmxDjwON\n0MbZdFG4LJqYqHh4YVgQyZ5qWn5SQKu5DMWK/l3OdcwGygvwZJM7NGPuY8aZ8oSGZRFx2CMb\ngJndlJLZB+m1q6IlVhxUSH3TmYRNBTlLHsTMKmbpEQc0lQKBgHgaPaKzwvDts0WzP84zy3uq\nylePshV8qHqHrjcP1nkMnMmBRHE5CgsuJGN3mST4QDZSOfEOR+56QCnGCjtCP5uZBAhE6657\nC3LOfzhAOTco+C0LcSaFAJULXWs5DSZk3D0AGrO8/0kFwqTw+r+ZTCtV8F9GbpjiLhTM/nJa\n7bym\n-----END RSA PRIVATE KEY-----\n\n",
-  "cert": "-----BEGIN CERTIFICATE-----\r\nMIIC1TCCAb2gAwIBAgIBATANBgkqhkiG9w0BAQUFADAAMB4XDTE0MDkxOTE5NDEw\r\nMVoXDTE1MDkxOTE5NDExMVowADCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC\r\nggEBAJXzA7/ttTKWWVRRLIifMU+yIE+joCQkZyC/HaYy2XiIZmDcmmp13zCAFMmt\r\nT+1WvX6Ho1Ugj+0cBQEGpmL7Uv4+Bg4tQCYVdLgY7gnjlmuLk0ResS8RvuYd+Rcx\r\nul1TlYm6yDv/OMc9fy1fFvXLr04N6oF6nRm/7UR5cUST4ms1fob8PpeEO97HkhJj\r\n8U0bTregbJLXYaBD1Sze2sfXCiENmDxK9HXqhmbKPG+kI6weBzX/HNVlG++bEips\r\n9Ox6NRVvYRW3P7y1EWnrTmROstPsZUASUeBMvC0k9PJ0nAtZxELkqRQaT7KiBf0y\r\nw+As4p+VieYkqm3mH+Iv5Vv3ld0CAwEAAaNaMFgwDAYDVR0TBAUwAwEB/zALBgNV\r\nHQ8EBAMCAvQwOwYDVR0lBDQwMgYIKwYBBQUHAwEGCCsGAQUFBwMCBggrBgEFBQcD\r\nAwYIKwYBBQUHAwQGCCsGAQUFBwMIMA0GCSqGSIb3DQEBBQUAA4IBAQBhfEaLkW0W\r\nojBlV3JI6l9zYOdQrzQysSKhHz0TMxJWiJwVQHbHSvkC3FC1lsqdvGzoCUTElBBH\r\nDZbOAi7DmoHzuf0ujKA6911DtMD8qRTdKDbGVCvK8LNJs65in8RypYkdYbTAar2u\r\ny0KeKVGmcaGEiw8D1MIPhL5m3ka92Cu2wgbwKPwbdNn6R67KkLpr0SuzNId/dVII\r\nAJwuiDRpVJ1opTwfEYV0JhsabH4LS3o5pn4TD9JrtF9H+k6nB8gJy9nxOAzjwVeD\r\n5yYpa8EWxr3N1Hef//VbdrG5jhMwXmynpsjn0qpwneWTgX0DmTcM6NJkTCHUMsmG\r\nF0ClX2baU0TC\r\n-----END CERTIFICATE-----\r\n"
-}
+````js
+akeypair({cert:true},function(err, options){
+  https.createServer(options, function (req, res) {
+    res.writeHead(200);
+    res.end("encryption is awesome\n");
+  }).listen(8443);
+});
 ````
 
-Then in any `https.request` make sure you either provide the cert as the `ca` for trust or have `rejectUnauthorized:false` (encryption only).
+Then in any `https.request` make sure you either provide the cert as the `ca` for trust or have `rejectUnauthorized:false` (encryption only), or for the [request](https://github.com/mikeal/request) module set `strictSSL:false`:
+
+````js
+var request = require('request');
+request.get({url:'https://localhost:8443/',strictSSL:false},function(err,res,body){
+  console.log(body);
+});
+````
 
 ## Performance
 
