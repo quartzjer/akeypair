@@ -24,3 +24,14 @@ test('keypair-js', function (t) {
     t.end();
   });
 });
+
+test('keypair-cert', function (t) {
+  var pair = keypair({cert:true},function(err, pair){
+    t.ok(pair.public, 'private key');
+    t.ok(pair.key, 'private key');
+    t.ok(pair.cert, 'self-signed cert');
+    t.assert(/BEGIN CERTIFICATE/.test(pair.cert), 'public header');
+    t.assert(/END CERTIFICATE/.test(pair.cert), 'public header');
+    t.end();
+  });
+});
