@@ -1,6 +1,6 @@
 # akeypair
 
-Async generate a RSA PEM key pair and self-signed cert (X509) from pure JS (slower) or compiled (faster).
+Async generate a RSA PEM key pair and self-signed cert (X.509) from pure JS (slower) or compiled (faster).
 
 > This is a fork of the [keypair](https://github.com/juliangruber/keypair) module, making it async so that it doesn't block (using web-workers when available) and also will try to use a compiled OpenSSL binding in node (still falling back to pure-JS if not).
 

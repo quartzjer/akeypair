@@ -1,6 +1,6 @@
 {
   "name": "akeypair",
-  "description": "Async generate a RSA PEM key pair and self-signed cert (X509) from pure JS (slower) or compiled (faster)",
+  "description": "Async generate a RSA PEM key pair and self-signed cert (X.509) from pure JS (slower) or compiled (faster)",
   "version": "0.2.2",
   "repository": {
     "type": "git",
