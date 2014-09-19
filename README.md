@@ -15,7 +15,7 @@ Async generate a RSA PEM key pair and self-signed cert (X.509) from pure JS (slo
 var akeypair = require('akeypair');
 
 akeypair(function(err, pair){
-  console.log(pair);
+  console.log(pair); // 2048 by default
 });
 ```
 
@@ -28,8 +28,6 @@ $ node example.js
   "private": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAqqD8i9HQ2STKLUtwHvHGsmfA2AW5U7v4O/iZ7wYfhW+T2fFA\nVlUoRK+z+JdWudsv/OAGLgn8FQ7IjlvRlvQWonVgH7pyIPXy2Xun0v592PgRkQu8\nAsBdwOCudQ1Dq+9eqs6sgFFrd2Nzrc6mApcpEppU1V9oJBPsCSL4SLctMQg5Btx3\nhzFBmn2Gc6fmIAECc7gMcskJsxbUVSQmp+sDnTBj5VSVa/ij6jjSTLNLfUHkeE/u\n8wlD2pf/gPyiYsqBteROpFqbJtmHIj9lVH6ROrwcghXTxcG8tQzcr+M8YXVSbanY\nXDq2MormAbUO2Y3V9fj5YV0ZVH6UF3zrUjWYZQIDAQABAoIBAEZVvCTKpYONFcYc\nDajD0zshZ63kliN9HXNjI9kSthWkC9dQCkxMKCBAKTi08awFPT/I/OMnfIEVqfh8\nwuWt0lK/fZM2oOsTVzrtLR3dh/TTNTKMGsErmLn0JBXeFOIf9u8D6LmwVlNNbJbd\n0zLIKscfVQ7rmBsfFzIg9yXKVFecNnHU8+6pBrzlzjoAIZ2BvwAW4T3h9UTnupBv\nQA951O73xI3kyDNmZdJ1pUgjySAM5mFB8OmAwvTIN4KWwEVHr/i7Kck6wn+tpvTx\ntm01NHwCYdCkJEyEvRNWEP93RX7Cdh7Xzw9D3bINhw3Trujyfrdh1TuG5Gv1ZKPN\n77a899UCgYEA3w1QQOXa2pL1811+vs7/5NPWVL01JqWey0XFhO2C2hudW8JNeH5j\naQgqO5LXf6gkHlM+uONsXvZJ6L+SLyfNwQJq8Qzz/uy3OdwM5B5qChH1SuD0/l9k\nHYsnJ9Dy73WIH4yrSSTaCCacsIOniQCuo8DZolRgMRrg2pgfsqGWdisCgYEAw9VM\nIzBOOu2FjhDl543sbKEa82llf9juyXHUTX8kxdsswAHPeiwcXkTBv6MKCaNPHz+I\nAOBR9hhxCM7yBKlgTEqPxZ4a1N8rnGeJqdiU89vjS+t1ydeT5VgERg0JtOKGzMUP\nJMw2Og74YqmDY/kicUq2qPDXpapgGFfVWLaQ868CgYBPW7hC7sS34XOaO5h9oL5Q\nlsH58jt33ZMqtU86JRraKNsKq43OogESfHIyMeN0Ksl29J0rQNbszmmrYoVLO7kr\nw4Vy7+3btDLYZh88Bkop/QutsW3ZFu1SyZCLzP6yDbn5p53Fb1QXdE1pS94Ok2yP\nHG0SITz8G5kGjPsyHeWfcwKBgCHiqoX8Oc0ghFeMvPtQJ3S0e8Fan2F72/WnaKDw\nOyCxSBEBPzFYqJ/3Lb9HKtl4FJzHlXTxW71FhWmMxXvhAvSwgigjr2jeJOGvWLa2\n7y8zASWF3J/MWZ75l+O3JdLSz5hnELPBUjDBnmEUC9Qkq70GvIyHAAl+bZpIuHXd\nQT+pAoGAbjxA3k0lRukuUSsXjKNKWxR09IbQmG3XueaUiHaHAdG5LWlDgeWsNti4\nT/4CjBh2je9X4r2phKsiw6f1BqysWd3r5AkTcafbEZI5USDXXmV8tCi2bcayy94R\nDjGa/Kngjt/ivWcgakHpWcdJCtZrOsqK+XircqwiHM+Z80d45Nk=\n-----END RSA PRIVATE KEY-----\n\n"
 }
 ```
-
-By default it generates a 2048 bit key, this can be changed by passing options as the first argument: `akeypair({bits:4096}, callback)`
 
 ## Self-Signed Certificate
 
@@ -55,7 +53,7 @@ request.get({url:'https://localhost:8443/',strictSSL:false},function(err,res,bod
 
 ## Performance
 
-When using node and the ursa dependency works, it's really fast :)
+When using node and the [ursa](https://github.com/Medium/ursa) dependency is available, it's really fast :)
 
 In the browser performance greatly depends on the bit size of the generated private key. With 1024 bits you get a key in 0.5s-2s, with 2048 bits it takes 8s-20s, on the same machine. 
 
@@ -69,6 +67,7 @@ Get an RSA PEM key pair.
 
 * `bits`: the size for the private key in bits. Default: **2048**.
 * `e`: the public exponent to use. Default: **65537**.
+* `cert`: defaults to `false` but can be `true` or `{expire:new Date()}` to include a self-signed certificate in the result
 
 ## Installation
 
