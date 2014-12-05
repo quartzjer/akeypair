@@ -1,7 +1,7 @@
 {
   "name": "akeypair",
   "description": "Async generate a RSA PEM key pair and self-signed cert (X.509) from pure JS (slower) or compiled (faster)",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/quartzjer/akeypair.git"
@@ -15,7 +15,7 @@
     "node-forge": "~0.6.12"
   },
   "optionalDependencies": {
-    "ursa": "~0.8.0"
+    "ursa": "~0.8.1"
   },
   "devDependencies": {
     "tape": "~1.0.2"
